@@ -1,0 +1,22 @@
+@EndUserText.label : 'employees history'
+@AbapCatalog.enhancement.category : #NOT_EXTENSIBLE
+@AbapCatalog.tableCategory : #TRANSPARENT
+@AbapCatalog.deliveryClass : #A
+@AbapCatalog.dataMaintenance : #RESTRICTED
+define table zemp_history {
+
+  key client         : abap.clnt not null;
+  key id             : sysuuid_x16 not null;
+  name               : abap.char(40);
+  location           : abap.char(40);
+  departement        : abap.char(40);
+  status             : boolean;
+  locallastchangedat : abp_locinst_lastchange_tstmpl;
+  lastchangedat      : abp_lastchange_tstmpl;
+  createdby          : abp_creation_user;
+  changedby          : abp_lastchange_user;
+  meins              : msehi;
+  @Semantics.quantity.unitOfMeasure : 'zdpkemployees.meins'
+  fkimg              : fkimg;
+
+}
