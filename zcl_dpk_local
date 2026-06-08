@@ -1,0 +1,54 @@
+CLASS zcl_dpk_local DEFINITION
+  PUBLIC
+  FINAL
+  CREATE PUBLIC  FOR EVENTS OF zdpk_employees_un_m.
+
+
+  PUBLIC SECTION.
+  PROTECTED SECTION.
+  PRIVATE SECTION.
+ENDCLASS.
+
+
+
+CLASS zcl_dpk_local IMPLEMENTATION.
+
+
+ENDCLASS.
+
+*"* use this source file for the definition and implementation of
+*"* local helper classes, interface definitions and type
+*"* declarations
+CLASS lcl_class DEFINITION  INHERITING FROM cl_abap_behavior_event_handler.
+
+  PRIVATE SECTION.
+
+    METHODS events_op FOR ENTITY EVENT
+      IMPORTING new_employee
+                  FOR zdpk_employees_un_m~employeeEnrolled.
+
+                  METHODS handle_update FOR ENTITY EVENT
+      IMPORTING updated_employee
+                  FOR zdpk_employees_un_m~employeeUpdated.
+
+ENDCLASS.
+
+CLASS lcl_class IMPLEMENTATION.
+
+  METHOD events_op.
+
+    IF  new_employee IS NOT INITIAL.
+
+    ENDIF.
+
+  ENDMETHOD.
+
+  METHOD handle_update.
+
+   IF  updated_employee IS NOT INITIAL.
+
+    ENDIF.
+
+  ENDMETHOD.
+
+ENDCLASS.
