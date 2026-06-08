@@ -1,0 +1,5 @@
+extension for projection implementation in class zbp_p_exun_m unique;
+
+extend behavior for zp_employees_un_m
+{
+}
