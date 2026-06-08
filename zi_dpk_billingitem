@@ -1,0 +1,24 @@
+@AbapCatalog.viewEnhancementCategory: [#NONE]
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'zi_dpk_billingitem'
+@Metadata.ignorePropagatedAnnotations: true
+define view entity zi_dpk_billingitem
+  as select from zi_dpk_vbrp  as Item
+    inner join   zi_dpk_t006a as UoM on Item.Uom = UoM.UoM
+{
+
+  key  Item.BillingDocument,
+  key  Item.Item,
+       Item.Material,
+       Item.Description,
+       @Semantics.quantity.unitOfMeasure: 'UoM'
+
+       Item.Quantity,
+       Item.Uom,
+       @Semantics.amount.currencyCode: 'Currency'
+
+       Item.Amount,
+       Item.Currency
+
+}
+
