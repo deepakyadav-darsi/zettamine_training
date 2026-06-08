@@ -1,0 +1,147 @@
+CLASS zbp_dpk_employees DEFINITION PUBLIC ABSTRACT FINAL FOR BEHAVIOR OF zdpk_employees.
+ENDCLASS.
+
+CLASS zbp_dpk_employees IMPLEMENTATION.
+ENDCLASS.
+
+
+CLASS lsc_zdpk_employees DEFINITION INHERITING FROM cl_abap_behavior_saver.
+
+  PROTECTED SECTION.
+
+    METHODS save_modified REDEFINITION.
+
+ENDCLASS.
+
+CLASS lsc_zdpk_employees IMPLEMENTATION.
+
+  METHOD save_modified.
+
+    DATA it_employee TYPE STANDARD TABLE OF zdpkemployees.
+
+    IF create IS NOT INITIAL.
+
+      it_employee = CORRESPONDING #( create-zdpk_employees  ).
+
+      INSERT zdpkemployees FROM TABLE @it_employee.
+
+    ENDIF.
+
+    IF delete IS NOT INITIAL.
+
+      it_employee = CORRESPONDING #( delete-zdpk_employees  ).
+      DELETE zdpkemployees FROM TABLE @it_employee.
+
+    ENDIF.
+
+
+    IF update IS NOT INITIAL.
+
+      "in local mode removes to auth , and can be only used to edit with in entity itself
+      "difference
+
+      LOOP AT update-zdpk_employees INTO DATA(wa_employee).
+
+        READ ENTITIES OF zdpk_employees IN LOCAL MODE
+             ENTITY zdpk_employees
+             ALL FIELDS WITH VALUE #( ( %tky-id = wa_employee-Id ) )
+             RESULT DATA(it_result)
+             FAILED DATA(it_failed).
+
+        IF it_failed IS INITIAL.
+          it_employee = CORRESPONDING #( it_result ).
+          MODIFY zdpkemployees FROM TABLE @it_employee.
+        ENDIF.
+
+      ENDLOOP.
+    ENDIF.
+
+
+  ENDMETHOD.
+
+ENDCLASS.
+
+
+
+CLASS lhc_zdpk_employees DEFINITION INHERITING FROM cl_abap_behavior_handler.
+  PRIVATE SECTION.
+
+    METHODS get_instance_authorizations FOR INSTANCE AUTHORIZATION
+      IMPORTING keys REQUEST requested_authorizations FOR zdpk_employees RESULT result.
+
+    METHODS get_global_authorizations FOR GLOBAL AUTHORIZATION
+      IMPORTING REQUEST requested_authorizations FOR zdpk_employees RESULT result.
+      
+    METHODS checklocation FOR VALIDATE ON SAVE
+      IMPORTING keys FOR zdpk_employees~checklocation.
+      
+    METHODS filldepartement FOR DETERMINE ON MODIFY
+      IMPORTING keys FOR zdpk_employees~filldepartement.
+
+ENDCLASS.
+
+CLASS lhc_zdpk_employees IMPLEMENTATION.
+
+  METHOD get_instance_authorizations.
+  ENDMETHOD.
+
+  METHOD get_global_authorizations.
+  ENDMETHOD.
+
+  METHOD checkLocation.
+
+
+
+    IF keys IS NOT INITIAL.
+
+      READ ENTITIES OF zdpk_employees IN LOCAL MODE ENTITY zdpk_employees ALL FIELDS WITH VALUE #( (  Id = keys[ 1 ]-Id   ) )
+      RESULT DATA(lt_data)
+      FAILED DATA(ft_data).
+
+      IF lt_data IS NOT INITIAL.
+        IF lt_data[ 1 ]-Location IS INITIAL.
+
+          reported-zdpk_employees = VALUE #(
+          (
+          %tky = lt_data[ 1 ]-%tky
+
+          %element-location =  if_abap_behv=>mk-on
+          %state_area = 'VALIDATE_LOCATION'
+
+          %msg = new_message_with_text( severity = if_abap_behv_message=>severity-error
+          text = 'Location is mandatory logic is working'
+          )
+          )
+          ).
+
+          failed-zdpk_employees = VALUE #( ( %tky = lt_data[ 1 ]-%tky ) ).
+
+
+
+        ENDIF.
+      ENDIF.
+    ENDIF.
+
+
+
+  ENDMETHOD.
+
+  METHOD filldepartement.
+    IF keys IS NOT INITIAL.
+      READ ENTITY IN LOCAL MODE  zdpk_employees ALL FIELDS WITH CORRESPONDING #( keys )
+          RESULT DATA(lt_data)
+          FAILED DATA(ft_data).
+
+      IF lt_data IS NOT INITIAL.
+        IF lt_data[ 1 ]-Location EQ 'India'.
+          MODIFY ENTITY IN LOCAL MODE zdpk_employees
+          UPDATE FIELDS ( Departement )
+          WITH VALUE #( ( %tky = lt_data[ 1 ]-%tky
+                          Departement = 'SAP'
+                       ) ).
+        ENDIF.
+      ENDIF.
+    ENDIF.
+  ENDMETHOD.
+
+ENDCLASS.
