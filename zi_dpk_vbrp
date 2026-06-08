@@ -1,0 +1,18 @@
+@AbapCatalog.viewEnhancementCategory: [#NONE]
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'zi_dpk_vbrp'
+@Metadata.ignorePropagatedAnnotations: true
+define view entity zi_dpk_vbrp
+  as select from vbrp
+{
+  key vbeln                as BillingDocument,
+  key posnr                as Item,
+      matnr                as Material,
+      arktx                as Description,
+      @Semantics.quantity.unitOfMeasure: 'UoM'
+      fkimg                as Quantity,
+      meins                as Uom,
+      @Semantics.amount.currencyCode: 'Currency'
+      netwr                as Amount,
+      cast('INR' as waerk) as Currency
+}
