@@ -1,0 +1,36 @@
+CLASS zcl_marc_dpk DEFINITION
+  PUBLIC
+  FINAL
+  CREATE PUBLIC .
+  PUBLIC SECTION.
+    methods get_matnr importing value(lv_matnr) type matnr.
+  PROTECTED SECTION.
+  PRIVATE SECTION.
+ENDCLASS.
+
+
+
+CLASS zcl_marc_dpk IMPLEMENTATION.
+
+  METHOD get_matnr.
+      zcl_singleton_it=>get_instance(
+       RECEIVING
+       ro_instance = data(lo_log2)
+      )..
+
+SELECT *
+      FROM marc
+      INTO table @data(rv_matnr)
+      WHERE matnr = @lv_matnr.
+
+
+IF sy-subrc eq 0.
+      lo_log2->add_message( iv_text = 'marc data Found'        iv_type = 'I' ).
+    ELSE.
+      lo_log2->add_message( iv_text = ' marc data not  Found'        iv_type = 'E' ).
+
+    ENDIF.
+
+  ENDMETHOD.
+
+ENDCLASS.
