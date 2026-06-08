@@ -1,0 +1,21 @@
+@EndUserText.label : 'Draft table for entity ZR_EKKO_DPK'
+@AbapCatalog.enhancement.category : #EXTENSIBLE_ANY
+@AbapCatalog.tableCategory : #TRANSPARENT
+@AbapCatalog.deliveryClass : #A
+@AbapCatalog.dataMaintenance : #RESTRICTED
+define table zekko_dpk_d {
+
+  key mandt           : mandt not null;
+  key billingdocument : vbeln_vf not null;
+  name                : name1_gp;
+  country             : land1_gp;
+  billingdate         : fkdat;
+  payer               : kunrg;
+  @Semantics.amount.currencyCode : 'zekko_dpk_d.currency'
+  amount              : netwr;
+  currency            : waerk;
+  locallastchangedat  : abp_locinst_lastchange_tstmpl;
+  lastchangedat       : abp_lastchange_tstmpl;
+  "%admin"            : include sych_bdl_draft_admin_inc;
+
+}
