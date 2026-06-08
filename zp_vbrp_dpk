@@ -1,0 +1,22 @@
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'projection zvbrp_dpk'
+@Metadata.ignorePropagatedAnnotations: true
+@Metadata.allowExtensions: true
+
+define view entity zp_vbrp_dpk as projection on zr_vbrp_dpk
+{
+    key Billingdocument,
+    key Item,
+    Material,
+    Description,
+        @Semantics.quantity.unitOfMeasure: 'Uom' // Point to the Alias below
+    Quantity,
+    Uom,
+        @Semantics.amount.currencyCode: 'Currency' // Point to the Alias below
+    
+    Amount,
+    Currency,
+    LocalLastChangedAt,
+    /* Associations */
+    _Header : redirected to parent zp_ekkp_dpk
+}
