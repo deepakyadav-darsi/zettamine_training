@@ -1,0 +1,20 @@
+@EndUserText.label : 'Employees table item'
+@AbapCatalog.enhancement.category : #NOT_EXTENSIBLE
+@AbapCatalog.tableCategory : #TRANSPARENT
+@AbapCatalog.deliveryClass : #A
+@AbapCatalog.dataMaintenance : #RESTRICTED
+define table zdpk_emp_itm {
+
+  key client         : abap.clnt not null;
+  key id             : sysuuid_x16 not null;
+  key parent_uuid    : sysuuid_x16 not null;
+  role               : abap.char(50);
+  employment_type    : abap.char(20);
+  city               : abap.char(40);
+  age                : abap.int1;
+  locallastchangedat : abp_locinst_lastchange_tstmpl;
+  lastchangedat      : abp_lastchange_tstmpl;
+  createdby          : abp_creation_user;
+  changedby          : abp_lastchange_user;
+
+}
