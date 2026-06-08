@@ -1,0 +1,49 @@
+unmanaged implementation in class zbp_dpk_employees_un_m unique;
+strict ( 2 );
+with draft;
+extensible;
+
+define behavior for ZDPK_EMPLOYEES_UN_M //alias <alias_name>
+
+draft table zunm_tab
+early numbering
+lock master
+total etag Lastchangedat
+authorization master ( global, instance )
+
+etag master Locallastchangedat
+
+extensible
+{
+
+  create ( authorization : global );
+  update;
+  delete;
+  field ( readonly ) Id;
+
+validation checkLocation on save { create; update; }
+determination filldepartement on modify{ field Location;}
+ side effects { field Location affects  field Departement; }
+  draft action Resume;
+   draft action Edit;
+  draft action Activate optimized;
+  draft action Discard;
+  draft determine action Prepare
+
+  {
+    validation checkLocation;
+
+  }
+
+
+
+action(features : instance) SetActive parameter zdpk_emp_status result[1] $self;
+factory action copy[1];
+static factory action upload[1];
+static action Resetall;
+internal action resetStatus;
+event employeeEnrolled;
+event employeeUpdated;
+
+
+}
