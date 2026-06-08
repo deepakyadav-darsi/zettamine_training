@@ -1,0 +1,70 @@
+CLASS zcl_singleton_normal DEFINITION
+
+  PUBLIC
+  FINAL
+  CREATE PRIVATE. " Only the class itself can create an instance
+
+  PUBLIC SECTION.
+    " Define the structure for our messages
+    TYPES: BEGIN OF ty_message,
+             text TYPE string,
+             type TYPE string, " Built-in type for message types (I, E, S, W)
+           END OF ty_message.
+    TYPES: tt_messages TYPE STANDARD TABLE OF ty_message WITH EMPTY KEY.
+
+    " Static method to get the single instance
+    CLASS-METHODS get_instance
+      RETURNING
+        VALUE(ro_instance) TYPE REF TO zcl_singleton_normal.
+
+    " Method to insert data
+    METHODS add_message
+      IMPORTING
+        iv_text TYPE string
+        iv_type TYPE symsgty.
+
+    " Method to display data
+    METHODS display_messages.
+
+  PRIVATE SECTION.
+    " This holds the one and only instance
+    CLASS-DATA go_instance TYPE REF TO zcl_singleton_normal.
+
+    " The internal table attribute
+    DATA mt_message_list TYPE tt_messages.
+
+ENDCLASS.
+
+
+
+CLASS zcl_singleton_normal IMPLEMENTATION.
+
+  METHOD get_instance.
+    IF go_instance IS NOT BOUND.
+      go_instance = NEW zcl_singleton_normal( ).
+    ENDIF.
+    ro_instance = go_instance.
+  ENDMETHOD.
+
+  METHOD add_message.
+    APPEND VALUE #( text = iv_text type = iv_type ) TO mt_message_list.
+  ENDMETHOD.
+
+  METHOD display_messages.
+    IF mt_message_list IS INITIAL.
+      WRITE: / 'No data found.'.
+      RETURN.
+    ENDIF.
+
+    LOOP AT mt_message_list ASSIGNING FIELD-SYMBOL(<fs_msg>).
+      WRITE: / 'Type:', <fs_msg>-type, 'Message:', <fs_msg>-text.
+    ENDLOOP.
+  ENDMETHOD.
+
+ENDCLASS.
+
+
+
+
+
+
