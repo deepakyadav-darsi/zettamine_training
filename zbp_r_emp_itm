@@ -1,0 +1,26 @@
+CLASS zbp_r_emp_itm DEFINITION PUBLIC ABSTRACT FINAL FOR BEHAVIOR OF zr_emp_itm.
+ENDCLASS.
+
+CLASS zbp_r_emp_itm IMPLEMENTATION.
+ENDCLASS.
+
+CLASS lhc_zr_emp_itm DEFINITION INHERITING FROM cl_abap_behavior_handler.
+  PRIVATE SECTION.
+
+    METHODS get_instance_authorizations FOR INSTANCE AUTHORIZATION
+      IMPORTING keys REQUEST requested_authorizations FOR zr_emp_itm RESULT result.
+
+    METHODS get_global_authorizations FOR GLOBAL AUTHORIZATION
+      IMPORTING REQUEST requested_authorizations FOR zr_emp_itm RESULT result.
+
+ENDCLASS.
+
+CLASS lhc_zr_emp_itm IMPLEMENTATION.
+
+  METHOD get_instance_authorizations.
+  ENDMETHOD.
+
+  METHOD get_global_authorizations.
+  ENDMETHOD.
+
+ENDCLASS.
