@@ -1,0 +1,27 @@
+@AbapCatalog.viewEnhancementCategory: [#NONE]
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'Item View zr_vbrp_dpk'
+@Metadata.ignorePropagatedAnnotations: true
+define view entity zr_vbrp_dpk 
+  as select from zvbrp_dpk
+  association to parent ZR_ekko_dpk as _Header on $projection.Billingdocument = _Header.Billingdocument
+{
+    key billingdocument       as Billingdocument,
+    key item                  as Item,
+    material                  as Material,
+    description               as Description,
+    
+    @Semantics.quantity.unitOfMeasure: 'Uom' // Point to the Alias below
+    quantity                  as Quantity,
+    uom                       as Uom,
+    
+    @Semantics.amount.currencyCode: 'Currency' // Point to the Alias below
+    amount                    as Amount,
+    currency                  as Currency,
+    
+    @Semantics.systemDateTime.localInstanceLastChangedAt: true
+    local_last_changed_at     as LocalLastChangedAt,
+    
+    /* Aditional field for Parent ETag check */
+    _Header 
+}
