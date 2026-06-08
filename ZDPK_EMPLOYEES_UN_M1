@@ -1,0 +1,6 @@
+extension implementation in class zbp_employees_ex_unm unique;
+
+extend behavior for ZDPK_EMPLOYEES_UN_M
+{
+
+}
