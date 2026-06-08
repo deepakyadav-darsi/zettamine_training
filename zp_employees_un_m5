@@ -1,0 +1,4 @@
+extend view entity zp_employees_un_m with {
+   emp.ext1_field,
+   emp.ext2_field
+}
