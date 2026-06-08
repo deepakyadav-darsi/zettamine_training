@@ -1,0 +1,20 @@
+@EndUserText.label : 'EKKO Table for RAP Managed with Draft'
+@AbapCatalog.enhancement.category : #NOT_EXTENSIBLE
+@AbapCatalog.tableCategory : #TRANSPARENT
+@AbapCatalog.deliveryClass : #A
+@AbapCatalog.dataMaintenance : #RESTRICTED
+define table zekko_dpk {
+
+  key client            : abap.clnt not null;
+  key billingdocument   : abap.char(10) not null;
+  name                  : abap.char(35);
+  country               : abap.char(3);
+  billingdate           : abap.dats;
+  payer                 : abap.char(10);
+  @Semantics.amount.currencyCode : 'zekko_dpk.currency'
+  amount                : abap.curr(15,2);
+  currency              : abap.cuky;
+  local_last_changed_at : abp_locinst_lastchange_tstmpl;
+  last_changed_at       : abp_lastchange_tstmpl;
+
+}
