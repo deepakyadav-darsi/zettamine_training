@@ -1,0 +1,21 @@
+@EndUserText.label : 'VBRP Item Table for RAP Managed with Draft'
+@AbapCatalog.enhancement.category : #NOT_EXTENSIBLE
+@AbapCatalog.tableCategory : #TRANSPARENT
+@AbapCatalog.deliveryClass : #A
+@AbapCatalog.dataMaintenance : #RESTRICTED
+define table zvbrp_dpk {
+
+  key client            : abap.clnt not null;
+  key billingdocument   : abap.char(10) not null;
+  item                  : abap.numc(6) not null;
+  material              : abap.char(18);
+  description           : abap.char(40);
+  @Semantics.quantity.unitOfMeasure : 'zvbrp_dpk.uom'
+  quantity              : abap.quan(13,3);
+  uom                   : abap.unit(3);
+  @Semantics.amount.currencyCode : 'zvbrp_dpk.currency'
+  amount                : abap.curr(15,2);
+  currency              : abap.cuky;
+  local_last_changed_at : abp_locinst_lastchange_tstmpl;
+
+}
