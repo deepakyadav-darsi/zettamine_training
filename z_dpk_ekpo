@@ -1,0 +1,17 @@
+@AbapCatalog.viewEnhancementCategory: [#NONE]
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'ekpo interface view'
+@Metadata.ignorePropagatedAnnotations: true
+define view entity z_dpk_ekpo as select from ekpo
+{
+    key ebeln as Ebeln,
+    key ebelp as Ebelp,
+    matnr as Matnr,
+    werks as Werks,
+    lgort as Lgort,
+    bednr as Bednr,
+    matkl as Matkl,
+    infnr as Infnr,
+    idnlf as Idnlf
+
+}
