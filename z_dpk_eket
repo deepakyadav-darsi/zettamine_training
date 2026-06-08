@@ -1,0 +1,16 @@
+@AbapCatalog.viewEnhancementCategory: [#NONE]
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'eket table interface view'
+@Metadata.ignorePropagatedAnnotations: true
+define view entity z_dpk_eket as select from eket
+{
+    key ebeln as Ebeln,
+    key ebelp as Ebelp,
+    key etenr as Etenr,
+    uniqueid as Uniqueid,
+    eindt as Eindt,
+    slfdt as Slfdt,
+    lpein as Lpein
+
+
+}
