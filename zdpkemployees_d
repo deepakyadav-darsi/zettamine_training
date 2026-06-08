@@ -1,0 +1,24 @@
+@EndUserText.label : 'Draft table for entity ZDPK_EMPLOYEES'
+@AbapCatalog.enhancement.category : #EXTENSIBLE_ANY
+@AbapCatalog.tableCategory : #TRANSPARENT
+@AbapCatalog.deliveryClass : #A
+@AbapCatalog.dataMaintenance : #RESTRICTED
+define table zdpkemployees_d {
+
+  key mandt          : mandt not null;
+  key id             : sysuuid_x16 not null;
+  name               : abap.char(40);
+  location           : abap.char(40);
+  departement        : abap.char(40);
+  status             : boolean;
+  locallastchangedat : abp_locinst_lastchange_tstmpl;
+  lastchangedat      : abp_lastchange_tstmpl;
+  createdby          : abp_creation_user;
+  changedby          : abp_lastchange_user;
+  meins              : msehi;
+  @Semantics.quantity.unitOfMeasure : 'zdpkemployees_d.meins'
+  fkimg              : fkimg;
+  "%admin"           : include sych_bdl_draft_admin_inc;
+  include zemp_struct;
+
+}
