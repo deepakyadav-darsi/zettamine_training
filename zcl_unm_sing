@@ -1,0 +1,197 @@
+CLASS zcl_unm_sing DEFINITION
+PUBLIC
+FINAL
+CREATE PRIVATE.
+
+  PUBLIC SECTION.
+    TYPES : tt_entities        TYPE TABLE FOR CREATE zdpk_employees_un_m,
+            tt_entities_update TYPE TABLE FOR UPDATE zdpk_employees_un_m,
+            tt_mapped          TYPE RESPONSE FOR MAPPED EARLY zdpk_employees_un_m,
+            tt_failed          TYPE RESPONSE FOR FAILED EARLY zdpk_employees_un_m,
+            tt_reported        TYPE RESPONSE FOR REPORTED EARLY zdpk_employees_un_m,
+            tt_reported_save   TYPE RESPONSE FOR REPORTED LATE zdpk_employees_un_m,
+            tt_keys_del        TYPE TABLE FOR DELETE zdpk_employees_un_m,
+            tt_keys            TYPE TABLE FOR READ IMPORT zdpk_employees_un_m,
+            tt_result          TYPE TABLE FOR READ RESULT zdpk_employees_un_m.
+
+    CLASS-METHODS get_instance RETURNING VALUE(instance_1) TYPE REF TO zcl_unm_sing.
+
+    METHODS earlynumbering_create IMPORTING entities TYPE tt_entities
+                                  CHANGING  mapped   TYPE tt_mapped
+                                            failed   TYPE tt_failed
+                                            reported TYPE tt_reported.
+
+    METHODS create IMPORTING entities TYPE tt_entities
+                   CHANGING  mapped   TYPE tt_mapped
+                             failed   TYPE tt_failed
+                             reported TYPE tt_reported.
+
+    METHODS delete IMPORTING keys     TYPE tt_keys_del
+                   CHANGING  mapped   TYPE tt_mapped
+                             failed   TYPE tt_failed
+                             reported TYPE tt_reported.
+
+    METHODS read IMPORTING keys     TYPE tt_keys
+                 CHANGING  result   TYPE tt_result
+                           failed   TYPE tt_failed
+                           reported TYPE tt_reported.
+
+    METHODS save
+      EXPORTING ev_operation TYPE string
+      CHANGING  reported     TYPE tt_reported_save.
+
+    METHODS update
+      IMPORTING entities TYPE tt_entities_update
+      CHANGING  mapped   TYPE tt_mapped
+                failed   TYPE tt_failed
+                reported TYPE tt_reported.
+
+  PROTECTED SECTION.
+  PRIVATE SECTION.
+    CLASS-DATA obj_ref TYPE REF TO zcl_unm_sing.
+    DATA it_employee     TYPE STANDARD TABLE OF zdpkemployees.
+    DATA it_employee_del TYPE STANDARD TABLE OF zdpkemployees.
+    DATA it_employee_up TYPE STANDARD TABLE OF zdpkemployees.
+    DATA mv_operation    TYPE string.
+    DATA it_employee_hist TYPE STANDARD TABLE OF zemp_history.
+ENDCLASS.
+
+
+
+CLASS zcl_unm_sing IMPLEMENTATION.
+
+  METHOD get_instance.
+    obj_ref = instance_1 = COND #( WHEN obj_ref IS BOUND
+    THEN obj_ref
+    ELSE NEW #( ) ).
+  ENDMETHOD.
+
+  METHOD earlynumbering_create.
+    IF entities IS NOT INITIAL.
+      TRY.
+          DATA(newID) = cl_uuid_factory=>create_system_uuid( )->create_uuid_x16( ).
+          mapped-zdpk_employees_un_m = VALUE #( (
+          %cid      = entities[ 1 ]-%cid
+          %is_draft = entities[ 1 ]-%is_draft
+          Id        = newID
+          ) ).
+        CATCH cx_uuid_error.
+      ENDTRY.
+    ENDIF.
+  ENDMETHOD.
+
+  METHOD create.
+
+    IF entities IS NOT INITIAL.
+      CLEAR mv_operation.
+      mv_operation = 'CREATE'.
+
+      it_employee = CORRESPONDING #( entities MAPPING id = Id
+                                                       name = Name
+                                                       location = Location
+                                                       departement = Departement
+                                                       status = Status ).
+      GET TIME STAMP FIELD DATA(tsl).
+      IF it_employee IS NOT INITIAL.
+        it_employee[ 1 ]-lastchangedat      = tsl.
+        it_employee[ 1 ]-locallastchangedat = tsl.
+        it_employee[ 1 ]-createdby          = sy-uname.
+        it_employee[ 1 ]-changedby          = sy-uname.
+      ENDIF.
+    ENDIF.
+
+  ENDMETHOD.
+
+  METHOD update.
+    CLEAR mv_operation.
+    IF entities IS NOT INITIAL.
+      mv_operation = 'UPDATE'.
+
+      " 1. Extract the target key from the runtime entity buffer
+      DATA(lv_emp_id) = entities[ 1 ]-id.
+
+      " 2. Read the existing, intact row directly from the active database
+      SELECT SINGLE * FROM zdpkemployees
+        WHERE id = @lv_emp_id
+        INTO @DATA(ls_existing_emp).
+
+      IF sy-subrc = 0.
+        " 3. Archive the current state into history before applying modifications
+        APPEND INITIAL LINE TO it_employee_hist ASSIGNING FIELD-SYMBOL(<ls_hist>).
+        <ls_hist> = CORRESPONDING #( ls_existing_emp ).
+
+        " 4. Overwrite ONLY the fields provided by the incoming application update frame
+        IF entities[ 1 ]-%control-Location = if_abap_behv=>mk-on.
+          ls_existing_emp-location = entities[ 1 ]-Location.
+        ENDIF.
+
+        IF entities[ 1 ]-%control-Status = if_abap_behv=>mk-on.
+          ls_existing_emp-status = entities[ 1 ]-Status.
+        ENDIF.
+
+        IF entities[ 1 ]-%control-Departement = if_abap_behv=>mk-on.
+          ls_existing_emp-departement = entities[ 1 ]-Departement.
+        ENDIF.
+
+        IF entities[ 1 ]-%control-Name = if_abap_behv=>mk-on.
+          ls_existing_emp-name = entities[ 1 ]-Name.
+        ENDIF.
+
+        " 5. Refresh administrative trailing data fields safely
+        GET TIME STAMP FIELD DATA(tsl).
+        ls_existing_emp-lastchangedat      = tsl.
+        ls_existing_emp-locallastchangedat = tsl.
+        ls_existing_emp-changedby          = sy-uname.
+
+        " 6. Pass the complete database layout down to the save sequence buffer
+        APPEND ls_existing_emp TO it_employee.
+      ENDIF.
+    ENDIF.
+  ENDMETHOD.
+
+  METHOD delete.
+    CLEAR mv_operation.
+    mv_operation = 'DELETE'.
+    it_employee_del = CORRESPONDING #( keys ).
+  ENDMETHOD.
+
+  METHOD read.
+    CLEAR mv_operation.
+    mv_operation = 'READ'.
+
+    SELECT * FROM zdpkemployees INTO TABLE @DATA(it_emp)
+        FOR ALL ENTRIES IN @keys
+        WHERE id = @keys-Id.
+
+    result = CORRESPONDING #( it_emp MAPPING id = Id ).
+  ENDMETHOD.
+
+  METHOD save.
+
+    IF it_employee IS NOT INITIAL.
+      MODIFY zdpkemployees FROM TABLE it_employee.
+
+      " FIX: Safely populate late reported table without triggering primary key collisions
+      LOOP AT it_employee ASSIGNING FIELD-SYMBOL(<ls_emp>).
+        APPEND VALUE #( id = <ls_emp>-id ) TO reported-zdpk_employees_un_m.
+      ENDLOOP.
+    ENDIF.
+
+    IF it_employee_hist IS NOT INITIAL.
+      INSERT zemp_history FROM TABLE it_employee_hist.
+    ENDIF.
+
+    IF it_employee_del IS NOT INITIAL.
+      DELETE zdpkemployees FROM TABLE it_employee_del.
+      mv_operation = 'DELETE'.
+    ENDIF.
+
+    ev_operation = mv_operation.
+
+    CLEAR: it_employee,
+           it_employee_del,
+           it_employee_hist,
+           mv_operation.
+  ENDMETHOD.
+
+ENDCLASS.
