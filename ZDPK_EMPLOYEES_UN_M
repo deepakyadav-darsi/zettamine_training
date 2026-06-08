@@ -1,0 +1,32 @@
+@AbapCatalog.viewEnhancementCategory: [#PROJECTION_LIST]
+@AbapCatalog.extensibility: {
+  extensible: true,
+  allowNewDatasources: false,
+  dataSources: ['_Extension'],
+  elementSuffix: 'ZDP'
+}
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'employees root view'
+@Metadata.ignorePropagatedAnnotations: true
+@Metadata.allowExtensions: true
+
+define root view entity ZDPK_EMPLOYEES_UN_M
+  as select from zdpkemployees
+  association to zex_employee as _Extension on $projection.Id = _Extension.Id
+{
+  key id                 as Id,
+      name               as Name,
+      location           as Location,
+      departement        as Departement,
+      status             as Status,
+      @Semantics.systemDateTime.localInstanceLastChangedAt: true
+      locallastchangedat as Locallastchangedat,
+      @Semantics.systemDate.lastChangedAt: true
+      lastchangedat      as Lastchangedat,
+      createdby          as Createdby,
+      changedby          as Changedby,
+      meins              as Meins,
+      @Semantics.quantity.unitOfMeasure: 'Meins'
+      fkimg              as Fkimg,
+      _Extension 
+}
