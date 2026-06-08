@@ -1,0 +1,73 @@
+@Metadata.allowExtensions: true
+@Metadata.ignorePropagatedAnnotations: true
+@Endusertext: {
+  Label: 'employees root view'
+}
+@AccessControl.authorizationCheck: #MANDATORY
+define root view entity ZGN_C_DPK_EMPLOYEES_UN_M_AI
+  provider contract TRANSACTIONAL_QUERY
+  as projection on ZDPK_EMPLOYEES_UN_M
+{
+  @Endusertext: {
+    Label: 'UUID', 
+    Quickinfo: '16 Byte UUID in 16 Bytes (Raw Format)'
+  }
+  key Id,
+  Name,
+  Location,
+  Departement,
+  @Endusertext: {
+    Label: '', 
+    Quickinfo: 'Boolean Variable (X = True, - = False, Space = Unknown)'
+  }
+  @Objectmodel: {
+    Uppercase: true
+  }
+  Status,
+  @Endusertext: {
+    Label: 'Changed On', 
+    Quickinfo: 'Local Instance Last Change Date Time'
+  }
+  @Semantics: {
+    Systemdatetime.Localinstancelastchangedat: true
+  }
+  Locallastchangedat,
+  @Endusertext: {
+    Label: 'Changed On', 
+    Quickinfo: 'Last Change Date Time'
+  }
+  @Semantics: {
+    Systemdate.Lastchangedat: true
+  }
+  Lastchangedat,
+  @Endusertext: {
+    Label: 'Created By', 
+    Quickinfo: 'Created By User'
+  }
+  @Objectmodel: {
+    Uppercase: true
+  }
+  Createdby,
+  @Endusertext: {
+    Label: 'Changed By', 
+    Quickinfo: 'Last Changed By User'
+  }
+  @Objectmodel: {
+    Uppercase: true
+  }
+  Changedby,
+  @Endusertext: {
+    Label: 'Internal UoM', 
+    Quickinfo: 'Unit of Measurement'
+  }
+  Meins,
+  @Endusertext: {
+    Label: 'Invoiced Quantity', 
+    Quickinfo: 'Actual Invoiced Quantity'
+  }
+  @Semantics: {
+    Quantity.Unitofmeasure: 'Meins'
+  }
+  Fkimg,
+  _Extension
+}
