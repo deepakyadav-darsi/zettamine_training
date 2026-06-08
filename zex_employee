@@ -1,0 +1,16 @@
+@AbapCatalog.viewEnhancementCategory: [#PROJECTION_LIST]
+@AbapCatalog.extensibility: {
+  extensible: true,
+  allowNewDatasources: false,
+  dataSources: ['Employees'],
+  elementSuffix: 'ZDP'
+}
+
+define view entity zex_employee
+  as select from zdpkemployees as Employees
+{
+    key id as Id
+}
+
+
+
