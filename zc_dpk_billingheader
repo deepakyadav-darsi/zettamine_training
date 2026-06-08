@@ -1,0 +1,40 @@
+@Metadata.layer: #CUSTOMER
+annotate entity zc_dpk_billingheader with
+{
+  @UI.facet: [
+    {
+      id: 'Header',
+      type: #IDENTIFICATION_REFERENCE,
+      purpose: #STANDARD,
+      label: 'Header Data',
+      position: 10
+    },
+    {
+      id: 'Item',
+      type: #LINEITEM_REFERENCE,
+      targetElement: '_Item',
+      label: 'Item Data',
+      position: 20
+    }
+  ]
+
+  @UI.lineItem: [{ label: 'Document Number', position: 10 }]
+  @UI.identification: [{ label: 'Document Number', position: 10 }]
+  BillingDocument;
+
+  @UI.lineItem: [{ label: 'Country', position: 20 }]
+  Country;
+
+  @UI.lineItem: [{ label: 'Date', position: 30 }]
+  BillingDate;
+
+  @UI.lineItem: [{ label: 'Payer', position: 40 }]
+  Name;
+
+  @UI.lineItem: [{ label: 'Amount', position: 50 }]
+  @UI.identification: [{ label: 'Amount', position: 20 }]
+  Amount;
+
+  @UI.hidden: true
+  Currency;
+}
