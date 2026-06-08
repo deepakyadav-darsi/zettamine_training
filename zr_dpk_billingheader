@@ -1,0 +1,21 @@
+@AbapCatalog.viewEnhancementCategory: [#NONE]
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'item'
+@Metadata.ignorePropagatedAnnotations: true
+define view entity zdpk_billing_item as select from zi_dpk_billingitem
+association to parent zr_dpk_billingheader as _Header on $projection.BillingDocument = _Header.BillingDocument
+{
+    key BillingDocument,
+    key Item,
+    Material,
+    Description,
+           @Semantics.quantity.unitOfMeasure: 'UoM'
+    
+    Quantity,
+    Uom,
+           @Semantics.amount.currencyCode: 'Currency'
+    
+    Amount,
+    Currency,
+    _Header
+}
