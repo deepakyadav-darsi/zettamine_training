@@ -1,0 +1,23 @@
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'employees projection view'
+@Metadata.ignorePropagatedAnnotations: true
+@Metadata.allowExtensions: true
+define root  view entity zemloyees_projection
+provider contract transactional_query
+ as projection on zdpk_employees
+
+
+{
+    key Id,
+    Name,
+    Location,
+    Departement,
+    Status,
+    Locallastchangedat,
+    Lastchangedat,
+    Createdby,
+    Changedby,
+    Meins,
+  @Semantics.quantity.unitOfMeasure: 'Meins'
+    Fkimg
+}
