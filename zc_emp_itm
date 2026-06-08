@@ -1,0 +1,53 @@
+@Metadata.layer: #CUSTOMER
+annotate entity zc_emp_itm
+    with 
+{
+  /* Facet for the Item Object Page */
+  @UI.facet: [
+    {
+        id:              'ItemDetails',
+        type:            #IDENTIFICATION_REFERENCE,
+        label:           'Employee Item Details',
+        position:        10
+    }
+  ]
+
+  /* Fields */
+
+  @UI.hidden: true
+  Id;
+
+  @UI.hidden: true
+  ParentUuid;
+
+  @UI.lineItem:       [{ label: 'Role', position: 10 }]
+  @UI.identification: [{ label: 'Role', position: 10 }]
+  Role;
+
+  @UI.lineItem:       [{ label: 'Employment Type', position: 20 }]
+  @UI.identification: [{ label: 'Employment Type', position: 20 }]
+  EmploymentType;
+
+  @UI.lineItem:       [{ label: 'City', position: 30 }]
+  @UI.identification: [{ label: 'City', position: 30 }]
+  City;
+
+  @UI.lineItem:       [{ label: 'Age', position: 40 }]
+  @UI.identification: [{ label: 'Age', position: 40 }]
+  Age;
+
+  /* Administrative Fields - Hidden from UI but required for RAP logic */
+
+  @UI.hidden: true
+  Locallastchangedat;
+
+  @UI.hidden: true
+  Lastchangedat;
+
+  @UI.hidden: true
+  Createdby;
+
+  @UI.hidden: true
+  Changedby;
+    
+}
