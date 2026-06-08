@@ -1,0 +1,13 @@
+@EndUserText.label: 'abstract entity'
+define abstract entity zdpk_emp_status
+  //with parameters parameter_name : parameter_type
+{
+
+@EndUserText.label: 'Location'
+@UI.defaultValue: #('ELEMENT_OF_REFERENCED_ENTITY :Location')
+    Location : abap.char(40);
+    @EndUserText.label: 'Status'
+    @UI.defaultValue: #('ELEMENT_OF_REFERENCED_ENTITY :Status')
+    Status : boolean;
+    
+}
