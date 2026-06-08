@@ -1,0 +1,14 @@
+@AbapCatalog.viewEnhancementCategory: [#NONE]
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'zi vbrk'
+@Metadata.ignorePropagatedAnnotations: true
+define view entity zi_vbrk
+  as select from vbrk
+{
+  key cast( vbeln as vbeln_vf preserving type ) as BillingDocument,
+      fkdat                                     as BillingDate,
+      kunrg                                     as Payer,
+      @Semantics.amount.currencyCode: 'Currency'
+      netwr                                     as Amount,
+      waerk                                     as Currency
+}
