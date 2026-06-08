@@ -1,0 +1,4 @@
+extend view entity ZDPK_EMPLOYEES_UN_M with {
+    _Extension.ext1_field,
+    _Extension.ext2_field
+}
