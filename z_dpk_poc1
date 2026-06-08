@@ -1,0 +1,23 @@
+@AbapCatalog.viewEnhancementCategory: [#NONE]
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'purchase order compostie 1'
+@Metadata.ignorePropagatedAnnotations: true
+define view entity z_dpk_poc1 as select from Z_dpk_ekko as header
+inner join z_dpk_ekpo as item on header.Ebeln = item.Ebeln
+{
+    // composite view ekko innre join ekpo 
+    key header.Ebeln,
+    key item.Ebelp,
+    header.bukrs,
+    header.lifnr,
+    header.ekorg,
+    header.bsart,
+    item.Matnr,
+    item.Werks,
+    item.Lgort,
+    item.Bednr,
+    item.Matkl,
+    item.Infnr,
+    item.Idnlf
+    
+}
