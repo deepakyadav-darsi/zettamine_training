@@ -1,0 +1,31 @@
+managed implementation in class zbp_r_dpk_billingheader unique;
+strict ( 2 );
+
+
+
+define behavior for zr_dpk_billingheader alias Header
+persistent table ekko // Replace with your custom table
+lock master
+authorization master ( instance )
+// etag master <field_name> // Uncomment if you have a change-timestamp field
+{
+  create;
+  update;
+  delete;
+
+  field ( readonly ) BillingDocument;
+
+  association _Item { create; }
+}
+
+define behavior for zdpk_billing_item alias Item
+persistent table vbrp // Replace with your custom table
+lock dependent by _Header
+authorization dependent by _Header
+{
+  update;
+  delete;
+
+  field ( readonly ) BillingDocument, Item;
+  association _Header;
+}
