@@ -1,0 +1,49 @@
+@Metadata.layer: #CUSTOMER
+annotate entity zp_ekkp_dpk with
+{
+  @UI.facet: [
+    {
+      id: 'Header',
+      type: #IDENTIFICATION_REFERENCE,
+      purpose: #STANDARD,
+      label: 'General Information',
+      position: 10
+    },
+    {
+      id: 'Items',
+      type: #LINEITEM_REFERENCE,
+      label: 'Billing Items',
+      position: 20,
+      targetElement: '_item' // Matches the alias in your projection
+    }
+  ]
+
+  @UI.lineItem: [{ position: 10, label: 'Billing Document' }]
+  @UI.identification: [{ position: 10, label: 'Billing Document' }]
+  @UI.selectionField: [{ position: 10 }]
+  Billingdocument;
+
+  @UI.lineItem: [{ position: 20, label: 'Payer Name' }]
+  @UI.identification: [{ position: 20, label: 'Payer Name' }]
+  Name;
+
+  @UI.lineItem: [{ position: 30 }]
+  @UI.selectionField: [{ position: 20 }]
+  Country;
+
+  @UI.lineItem: [{ position: 40 }]
+  Billingdate;
+
+  @UI.lineItem: [{ position: 50, label: 'Total Amount' }]
+  @UI.identification: [{ position: 30, label: 'Total Amount' }]
+  Amount;
+
+  @UI.hidden: true
+  Currency;
+  
+  @UI.hidden: true
+  LocalLastChangedAt;
+  
+  @UI.hidden: true
+  LastChangedAt;
+}
