@@ -1,0 +1,29 @@
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'projection view for employees un m'
+@Metadata.ignorePropagatedAnnotations: true
+@AbapCatalog.extensibility: {
+  extensible: true,
+  allowNewDatasources: false,
+  dataSources: ['emp'],
+  elementSuffix: 'ZDP'
+}
+
+define root view entity zp_employees_un_m
+  provider contract transactional_query as projection on ZDPK_EMPLOYEES_UN_M as emp
+{
+    key Id,
+    Name,
+    Location,
+    Departement,
+    Status,
+    Locallastchangedat,
+    Lastchangedat,
+    Createdby,
+    Changedby,
+    Meins,
+  @Semantics.quantity.unitOfMeasure: 'Meins'
+    
+    Fkimg,
+    /* Associations */
+    _Extension
+}
