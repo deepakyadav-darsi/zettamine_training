@@ -1,0 +1,23 @@
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'employees root view'
+@Metadata.ignorePropagatedAnnotations: true
+define root view entity zdpk_employees as select from zdpkemployees
+//composition of target_data_source_name as _association_name
+{
+
+ key id as Id,
+ name as Name,
+ location as Location,
+ departement as Departement,
+ status as Status,
+ @Semantics.systemDateTime.localInstanceLastChangedAt: true
+ locallastchangedat as Locallastchangedat,
+ @Semantics.systemDate.localInstanceLastChangedAt: true
+ lastchangedat as Lastchangedat,
+ createdby as Createdby,
+ changedby as Changedby,
+ meins as Meins,
+ @Semantics.quantity.unitOfMeasure: 'Meins'
+ fkimg as Fkimg
+ 
+}
