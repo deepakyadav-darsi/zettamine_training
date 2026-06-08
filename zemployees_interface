@@ -1,0 +1,21 @@
+@AbapCatalog.viewEnhancementCategory: [#NONE]
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'employees interface view'
+@Metadata.ignorePropagatedAnnotations: true
+define view entity zemployees_interface as select from zdpkemployees
+{
+key id as Id,
+    name as Name,
+    location as Location,
+    departement as Departement,
+    status as Status,
+    // Expose the unit field
+    meins as Meins,
+    // Reference the alias 'Meins' defined above
+    @Semantics.quantity.unitOfMeasure: 'Meins'
+    fkimg as Fkimg,
+    locallastchangedat as Locallastchangedat,
+    lastchangedat as Lastchangedat,
+    createdby as Createdby,
+    changedby as Changedby
+}
