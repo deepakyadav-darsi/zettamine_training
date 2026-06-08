@@ -1,0 +1,8 @@
+@EndUserText.label : 'Extension Include Structure for Employees'
+@AbapCatalog.enhancement.category : #EXTENSIBLE_CHARACTER_NUMERIC
+@AbapCatalog.enhancement.fieldSuffix : 'ZDP'
+define structure zemp_struct {
+
+  dummy_field : abap.char(1);
+
+}
