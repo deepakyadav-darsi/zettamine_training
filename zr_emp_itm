@@ -1,0 +1,18 @@
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'root view for employee item'
+@Metadata.ignorePropagatedAnnotations: true
+define root view entity zr_emp_itm as select from zi_emp_item
+//composition of target_data_source_name as _association_name
+{
+    key Id,
+    key ParentUuid,
+    Role,
+    EmploymentType,
+    City,
+    Age,
+    Locallastchangedat,
+    Lastchangedat,
+    Createdby,
+    Changedby
+    //_association_name // Make association public
+}
