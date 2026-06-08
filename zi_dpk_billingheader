@@ -1,0 +1,18 @@
+@AbapCatalog.viewEnhancementCategory: [#NONE]
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'zi_dpk_billingheader'
+@Metadata.ignorePropagatedAnnotations: true
+define view entity zi_dpk_billingheader
+  as select from zi_vbrk     as Header
+    inner join   zi_dpk_kna1 as Customer on Header.Payer = Customer.Customer
+{
+  key Header.BillingDocument,
+      Customer.Name,
+      Customer.Country,
+      Header.BillingDate,
+      Header.Payer,
+      @Semantics.amount.currencyCode: 'Currency'
+      Header.Amount,
+      Header.Currency
+        
+}
