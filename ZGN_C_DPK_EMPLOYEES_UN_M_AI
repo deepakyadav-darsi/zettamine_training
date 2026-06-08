@@ -1,0 +1,136 @@
+@Metadata.layer: #CORE
+@UI.headerInfo.title.type: #STANDARD
+@UI.headerInfo.title.value: 'Id'
+@UI.headerInfo.description.type: #STANDARD
+@UI.headerInfo.description.value: 'Id'
+annotate view ZGN_C_DPK_EMPLOYEES_UN_M_AI with
+{
+  @EndUserText.label: 'Id'
+  @UI.facet: [ {
+    label: 'General Information', 
+    id: 'GeneralInfo', 
+    purpose: #STANDARD, 
+    position: 10 , 
+    type: #IDENTIFICATION_REFERENCE
+  } ]
+  @UI.identification: [ {
+    position: 10 , 
+    label: 'Id'
+  } ]
+  @UI.lineItem: [ {
+    position: 10 , 
+    label: 'Id'
+  } ]
+  @UI.selectionField: [ {
+    position: 10 
+  } ]
+  Id;
+  
+  @EndUserText.label: 'Name'
+  @UI.identification: [ {
+    position: 20 , 
+    label: 'Name'
+  } ]
+  @UI.lineItem: [ {
+    position: 20 , 
+    label: 'Name'
+  } ]
+  @UI.selectionField: [ {
+    position: 20 
+  } ]
+  Name;
+  
+  @EndUserText.label: 'Location'
+  @UI.identification: [ {
+    position: 30 , 
+    label: 'Location'
+  } ]
+  @UI.lineItem: [ {
+    position: 30 , 
+    label: 'Location'
+  } ]
+  @UI.selectionField: [ {
+    position: 30 
+  } ]
+  Location;
+  
+  @EndUserText.label: 'Departement'
+  @UI.identification: [ {
+    position: 40 , 
+    label: 'Departement'
+  } ]
+  @UI.lineItem: [ {
+    position: 40 , 
+    label: 'Departement'
+  } ]
+  @UI.selectionField: [ {
+    position: 40 
+  } ]
+  Departement;
+  
+  @UI.identification: [ {
+    position: 50 
+  } ]
+  @UI.lineItem: [ {
+    position: 50 
+  } ]
+  @UI.selectionField: [ {
+    position: 50 
+  } ]
+  Status;
+  
+  @UI.identification: [ {
+    position: 60 
+  } ]
+  @UI.lineItem: [ {
+    position: 60 
+  } ]
+  @UI.selectionField: [ {
+    position: 60 
+  } ]
+  Locallastchangedat;
+  
+  @UI.identification: [ {
+    position: 70 
+  } ]
+  @UI.lineItem: [ {
+    position: 70 
+  } ]
+  @UI.selectionField: [ {
+    position: 70 
+  } ]
+  Lastchangedat;
+  
+  @UI.identification: [ {
+    position: 80 
+  } ]
+  @UI.lineItem: [ {
+    position: 80 
+  } ]
+  @UI.selectionField: [ {
+    position: 80 
+  } ]
+  Createdby;
+  
+  @UI.identification: [ {
+    position: 90 
+  } ]
+  @UI.lineItem: [ {
+    position: 90 
+  } ]
+  @UI.selectionField: [ {
+    position: 90 
+  } ]
+  Changedby;
+  
+  @UI.identification: [ {
+    position: 100 
+  } ]
+  @UI.lineItem: [ {
+    position: 100 
+  } ]
+  @UI.selectionField: [ {
+    position: 100 
+  } ]
+  Fkimg;
+}
