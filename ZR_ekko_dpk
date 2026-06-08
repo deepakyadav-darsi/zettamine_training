@@ -1,0 +1,20 @@
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'root view zekko_dpk'
+@Metadata.ignorePropagatedAnnotations: true
+define root view entity ZR_ekko_dpk as select from zekko_dpk
+composition [0..*] of zr_vbrp_dpk as _item
+{
+
+     key billingdocument as Billingdocument,
+    name as Name,
+    country as Country,
+    billingdate as Billingdate,
+    payer as Payer,
+      @Semantics.amount.currencyCode : 'Currency'
+    amount as Amount,
+    currency as Currency,
+    local_last_changed_at as LocalLastChangedAt,
+    last_changed_at as LastChangedAt,
+    _item // Make association public
+    
+}
