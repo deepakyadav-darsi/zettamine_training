@@ -1,0 +1,26 @@
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'parent'
+@Metadata.ignorePropagatedAnnotations: true
+@Metadata.allowExtensions: true
+define root view entity zr_dpk_billingheader
+ as select from zi_dpk_billingheader
+composition[1..*] of zdpk_billing_item as _Item
+//composition of target_data_source_name as _association_name
+{
+    key BillingDocument,
+    Name,
+    Country,
+    BillingDate,
+    Payer,
+    @Semantics.amount.currencyCode: 'Currency'
+    Amount,
+    Currency,
+/* Pulling fields directly into Root */
+    @Semantics.systemDateTime.localInstanceLastChangedAt: true
+    locallastchangedat, 
+
+    @Semantics.systemDateTime.lastChangedAt: true
+    lastchangedat,
+    //_association_name // Make association public
+    _Item
+}
