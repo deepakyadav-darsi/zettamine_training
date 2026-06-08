@@ -1,0 +1,17 @@
+*&---------------------------------------------------------------------*
+*& Report zcl_mara_rp
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+
+REPORT zcl_mara_rp.
+
+START-OF-SELECTION.
+  DATA(lo_mara) = NEW zcl_mara_dpk( ).
+  DATA(lo_marc) = NEW zcl_marc_dpk(  ).
+  data(lo_log3) =  zcl_singleton_it=>get_instance( ).
+
+  lo_mara->get_matnr( EXPORTING lv_matnr = 'MAT11' ).
+  lo_marc->get_matnr( EXPORTING lv_matnr = 'mat11' ).
+  lo_log3->display_messages(  ).
+  
