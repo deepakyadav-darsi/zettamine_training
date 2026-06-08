@@ -1,0 +1,21 @@
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'projection zekko_dpk'
+@Metadata.ignorePropagatedAnnotations: true
+@Metadata.allowExtensions: true
+define root view entity zp_ekkp_dpk
+provider contract transactional_query
+ as projection on ZR_ekko_dpk
+{
+    key Billingdocument,
+    Name,
+    Country,
+    Billingdate,
+    Payer,
+          @Semantics.amount.currencyCode : 'Currency'
+    Amount,
+    Currency,
+    LocalLastChangedAt,
+    LastChangedAt,
+    /* Associations */
+    _item : redirected to composition child zp_vbrp_dpk
+}
