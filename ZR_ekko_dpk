@@ -1,0 +1,40 @@
+managed implementation in class zbp_r_ekko_dpk unique;
+strict ( 2 );
+with draft;
+
+define behavior for ZR_ekko_dpk //alias <alias_name>
+//persistent table zekko_dpk
+with unmanaged save
+draft table zekko_dpk_d
+
+lock master
+total etag Lastchangedat
+authorization master ( instance )
+etag master Locallastchangedat
+//etag master <field_name>
+{
+  create ( authorization : global );
+  update;
+  delete;
+  field ( readonly ) Billingdocument;
+  association _item { create; }
+  draft action Activate optimized;
+  draft action Discard;
+  draft action Edit;
+  draft action Resume;
+  draft determine action Prepare;
+}
+
+define behavior for zr_vbrp_dpk //alias <alias_name>
+//persistent table zvbrp_dpk
+with unmanaged save
+draft table zvbrp_dpkd
+lock dependent by _Header
+authorization dependent by _Header
+//etag master <field_name>
+{
+  update;
+  delete;
+  field ( readonly ) Billingdocument, Item;
+  association _Header;
+}
