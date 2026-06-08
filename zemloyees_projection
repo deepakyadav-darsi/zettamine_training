@@ -1,0 +1,53 @@
+@Metadata.layer: #CUSTOMER
+annotate entity zemloyees_projection
+    with 
+{
+  @UI.facet: [
+    {
+        id:              'Employee',
+        type:            #IDENTIFICATION_REFERENCE,
+        label:           'Employee',
+        purpose:         #STANDARD
+    }
+  ]
+
+
+
+  @UI.lineItem:       [{ label: 'ID', position: 10 }]
+  @UI.identification: [{ label: 'ID', position: 10 }]
+  Id;
+
+  @UI.lineItem:       [{ label: 'Name', position: 20 }]
+  @UI.identification: [{ label: 'Name', position: 20 }]
+  Name;
+
+  @UI.lineItem:       [{ label: 'Location', position: 30 }]
+  @UI.identification: [{ label: 'Location', position: 20 }]
+  Location;
+
+  @UI.lineItem:       [{ label: 'Dept', position: 40 }]
+  @UI.identification: [{ label: 'Department', position: 20 }]
+  Departement;
+
+  @UI.lineItem:       [{ label: 'Status', position: 50 }]
+  @UI.identification: [{ label: 'Status', position: 20 }]
+  Status;
+
+  @UI.hidden: true
+  Fkimg;
+
+  @UI.hidden: true
+  Meins;
+
+  @UI.hidden: true
+  Locallastchangedat;
+
+  @UI.hidden: true
+  Lastchangedat;
+
+  @UI.hidden: true
+  Createdby;
+
+  @UI.hidden: true
+  Changedby;
+}
