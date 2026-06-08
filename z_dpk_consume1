@@ -1,0 +1,22 @@
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'parent consume'
+@Metadata.ignorePropagatedAnnotations: true
+@Metadata.allowExtensions: true
+define root view entity z_dpk_consume1 as projection on z_dpk_poroot
+{
+    key Ebeln,
+    Ebelp,
+    bukrs,
+    lifnr,
+    ekorg,
+    bsart,
+    Matnr,
+    Werks,
+    Lgort,
+    Bednr,
+    Matkl,
+    Infnr,
+    Idnlf,
+    /* Associations */
+    item2 : redirected to composition child z_dpk_consume2
+}
