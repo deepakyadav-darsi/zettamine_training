@@ -1,0 +1,12 @@
+@AbapCatalog.viewEnhancementCategory: [#NONE]
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'interface view ekkko'
+@Metadata.ignorePropagatedAnnotations: true
+define view entity Z_dpk_ekko as select from ekko
+{
+    key ebeln as Ebeln,
+    bukrs as bukrs,
+    lifnr as lifnr,
+    ekorg as ekorg,
+    bsart as bsart
+}
