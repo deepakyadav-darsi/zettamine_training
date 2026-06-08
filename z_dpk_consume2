@@ -1,0 +1,29 @@
+@Metadata.layer: #CUSTOMER
+annotate entity z_dpk_consume2 with
+{
+  @UI.facet: [ { id:            'ItemData',
+                 purpose:       #STANDARD,
+                 type:          #IDENTIFICATION_REFERENCE,
+                 label:         'Item Details',
+                 position:      10 } ]
+
+  @UI: { lineItem:       [ { position: 10, label: 'Item' } ],
+         identification: [ { position: 10 } ] }
+  Ebelp;
+
+  @UI: { lineItem:       [ { position: 20, label: 'Material' } ],
+         identification: [ { position: 20 } ] }
+  Matnr;
+
+  @UI: { lineItem:       [ { position: 30, label: 'Plant' } ],
+         identification: [ { position: 30 } ] }
+  Werks;
+
+  @UI: { lineItem:       [ { position: 40, label: 'Storage Loc' } ],
+         identification: [ { position: 40 } ] }
+  Lgort;
+
+  @UI: { lineItem:       [ { position: 50, label: 'Material Group' } ],
+         identification: [ { position: 50 } ] }
+  Matkl;
+}
