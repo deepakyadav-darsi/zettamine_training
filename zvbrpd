@@ -1,0 +1,21 @@
+@EndUserText.label : 'Draft table for entity ZDPK_BILLING_ITEM'
+@AbapCatalog.enhancement.category : #EXTENSIBLE_ANY
+@AbapCatalog.tableCategory : #TRANSPARENT
+@AbapCatalog.deliveryClass : #A
+@AbapCatalog.dataMaintenance : #RESTRICTED
+define table zvbrpd {
+
+  key mandt           : mandt not null;
+  key billingdocument : vbeln_vf not null;
+  key item            : posnr_vf not null;
+  material            : matnr;
+  description         : arktx;
+  @Semantics.quantity.unitOfMeasure : 'zvbrpd.uom'
+  quantity            : fkimg;
+  uom                 : meins;
+  @Semantics.amount.currencyCode : 'zvbrpd.currency'
+  amount              : netwr_fp;
+  currency            : waerk;
+  "%admin"            : include sych_bdl_draft_admin_inc;
+
+}
