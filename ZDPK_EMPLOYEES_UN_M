@@ -1,0 +1,14 @@
+
+@EndUserText.label: 'access control for root view employees'
+@MappingRole: true
+define role ZDPK_EMPLOYEES_UN_M {
+    grant
+        select
+            on
+                ZDPK_EMPLOYEES_UN_M
+                    where
+                        Departement = 'SAP'
+                        ;
+                        
+}
+
