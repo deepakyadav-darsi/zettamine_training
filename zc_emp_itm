@@ -1,0 +1,18 @@
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'projection view for emp item'
+@Metadata.ignorePropagatedAnnotations: true
+@Metadata.allowExtensions: true
+
+define root view entity zc_emp_itm as projection on zr_emp_itm
+{
+
+    Role,
+    EmploymentType,
+    City,
+    Age,
+    Locallastchangedat,
+    Lastchangedat,
+    Createdby,
+    Changedby
+ 
+}
