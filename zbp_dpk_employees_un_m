@@ -1,0 +1,403 @@
+CLASS zbp_dpk_employees_un_m DEFINITION PUBLIC ABSTRACT FINAL FOR BEHAVIOR OF zdpk_employees_un_m.
+ENDCLASS.
+
+CLASS zbp_dpk_employees_un_m IMPLEMENTATION.
+ENDCLASS.  
+
+
+CLASS lhc_ZDPK_EMPLOYEES_UN_M DEFINITION INHERITING FROM cl_abap_behavior_handler.
+
+  PRIVATE SECTION.
+
+    METHODS get_instance_authorizations FOR INSTANCE AUTHORIZATION
+      IMPORTING keys REQUEST requested_authorizations FOR zdpk_employees_un_m RESULT result.
+
+    METHODS get_global_authorizations FOR GLOBAL AUTHORIZATION
+      IMPORTING REQUEST requested_authorizations FOR zdpk_employees_un_m RESULT result.
+
+    METHODS create FOR MODIFY
+      IMPORTING entities FOR CREATE zdpk_employees_un_m.
+
+    METHODS earlynumbering_create FOR NUMBERING
+      IMPORTING entities FOR CREATE zdpk_employees_un_m.
+
+    METHODS update FOR MODIFY
+      IMPORTING entities FOR UPDATE zdpk_employees_un_m.
+
+    METHODS delete FOR MODIFY
+      IMPORTING keys FOR DELETE zdpk_employees_un_m.
+
+    METHODS read FOR READ
+      IMPORTING keys FOR READ zdpk_employees_un_m RESULT result.
+
+    METHODS lock FOR LOCK
+      IMPORTING keys FOR LOCK zdpk_employees_un_m.
+
+    METHODS filldepartement FOR DETERMINE ON MODIFY
+      IMPORTING keys FOR zdpk_employees_un_m~filldepartement.
+
+    METHODS checkLocation FOR VALIDATE ON SAVE
+      IMPORTING keys FOR zdpk_employees_un_m~checkLocation.
+
+    METHODS get_instance_features FOR INSTANCE FEATURES
+      IMPORTING keys REQUEST requested_features FOR zdpk_employees_un_m RESULT result.
+
+    METHODS SetActive FOR MODIFY
+      IMPORTING keys FOR ACTION zdpk_employees_un_m~SetActive RESULT result.
+
+    METHODS copy FOR MODIFY
+      IMPORTING keys FOR ACTION zdpk_employees_un_m~copy.
+
+    METHODS Resetall FOR MODIFY
+      IMPORTING keys FOR ACTION zdpk_employees_un_m~Resetall.
+
+    METHODS resetStatus FOR MODIFY
+      IMPORTING keys FOR ACTION zdpk_employees_un_m~resetStatus.
+
+    METHODS upload FOR MODIFY
+      IMPORTING keys FOR ACTION zdpk_employees_un_m~upload.
+
+ENDCLASS.
+
+
+
+CLASS lhc_ZDPK_EMPLOYEES_UN_M IMPLEMENTATION.
+
+  METHOD get_instance_authorizations.
+  ENDMETHOD.
+
+  METHOD get_global_authorizations.
+  ENDMETHOD.
+
+  METHOD create.
+    zcl_unm_sing=>get_instance( )->create(
+      EXPORTING
+        entities = entities
+      CHANGING
+        mapped   = mapped
+        failed   = failed
+        reported = reported
+    ).
+  ENDMETHOD.
+
+  METHOD earlynumbering_create.
+    zcl_unm_sing=>get_instance( )->earlynumbering_create(
+      EXPORTING
+        entities = entities
+      CHANGING
+        mapped   = mapped
+        failed   = failed
+        reported = reported
+    ).
+  ENDMETHOD.
+
+  METHOD update.
+    zcl_unm_sing=>get_instance( )->update(
+      EXPORTING
+        entities = entities
+      CHANGING
+        mapped   = mapped
+        failed   = failed
+        reported = reported
+    ).
+  ENDMETHOD.
+
+  METHOD delete.
+    zcl_unm_sing=>get_instance( )->delete(
+      EXPORTING
+        keys     = keys
+      CHANGING
+        mapped   = mapped
+        failed   = failed
+        reported = reported
+    ).
+  ENDMETHOD.
+
+  METHOD read.
+    zcl_unm_sing=>get_instance( )->read(
+      EXPORTING
+        keys     = keys
+      CHANGING
+        result   = result
+        failed   = failed
+        reported = reported
+    ).
+  ENDMETHOD.
+
+  METHOD lock.
+  ENDMETHOD.
+
+  METHOD filldepartement.
+
+    IF keys IS NOT INITIAL.
+      READ ENTITY IN LOCAL MODE zdpk_employees_un_m ALL FIELDS WITH CORRESPONDING #( keys )
+          RESULT DATA(lt_data)
+          FAILED DATA(ft_data).
+
+      IF lt_data IS NOT INITIAL.
+        IF lt_data[ 1 ]-Location = 'India'.
+          MODIFY ENTITY IN LOCAL MODE zdpk_employees_un_m
+          UPDATE FIELDS ( Departement )
+          WITH VALUE #( ( %tky = lt_data[ 1 ]-%tky
+                          Departement = 'SAP'
+                       ) ).
+        ENDIF.
+      ENDIF.
+    ENDIF.
+
+  ENDMETHOD.
+
+  METHOD checkLocation.
+
+    IF keys IS NOT INITIAL.
+      READ ENTITIES OF zdpk_employees_un_m IN LOCAL MODE
+           ENTITY zdpk_employees_un_m
+           ALL FIELDS WITH CORRESPONDING #( keys )
+           RESULT DATA(it_result)
+           FAILED DATA(it_failed).
+
+      IF it_result IS NOT INITIAL.
+        APPEND VALUE #( %tky = it_result[ 1 ]-%tky
+                        %state_area = 'LOCATION' ) TO reported-zdpk_employees_un_m.
+
+        IF it_result[ 1 ]-Location IS INITIAL.
+          reported-zdpk_employees_un_m = VALUE #( BASE reported-zdpk_employees_un_m (
+                                         %tky = it_result[ 1 ]-%tky
+                                         %msg = new_message_with_text(
+                                                  severity = if_abap_behv_message=>severity-error
+                                                  text     = 'Location cannot be empty'
+                                                )
+                                         %element-location = if_abap_behv=>mk-on
+                                         %state_area       = 'LOCATION'
+                                      ) ).
+
+          failed-zdpk_employees_un_m = VALUE #( ( %tky = it_result[ 1 ]-%tky ) ).
+        ENDIF.
+      ENDIF.
+    ENDIF.
+
+  ENDMETHOD.
+
+  METHOD get_instance_features.
+  ENDMETHOD.
+
+METHOD SetActive.
+    IF keys IS NOT INITIAL.
+      " Read the incoming parameters safely from the first action key
+      DATA(ls_key) = keys[ 1 ].
+
+      MODIFY ENTITY IN LOCAL MODE zdpk_employees_un_m
+        UPDATE FIELDS ( Location Status )
+        WITH VALUE #( ( %tky     = ls_key-%tky
+                        Location = ls_key-%param-Location
+                        Status   = ls_key-%param-Status
+                     ) ).
+
+      " Read back the updated record to return the result expected by the action
+      READ ENTITY IN LOCAL MODE zdpk_employees_un_m
+        ALL FIELDS WITH CORRESPONDING #( keys )
+        RESULT DATA(it_result1)
+        FAILED DATA(it_failed1).
+
+      IF it_result1 IS NOT INITIAL.
+        result = VALUE #( ( %tky   = it_result1[ 1 ]-%tky
+                            %param = it_result1[ 1 ]
+                         ) ).
+      ENDIF.
+    ENDIF.
+  ENDMETHOD.
+  METHOD copy.
+    IF keys IS NOT INITIAL.
+      DATA zdpk_employees_un_m TYPE TABLE FOR CREATE zdpk_employees_un_m.
+      DATA lt_early_num TYPE TABLE FOR CREATE zdpk_employees_un_m.
+
+      READ ENTITY IN LOCAL MODE zdpk_employees_un_m
+        ALL FIELDS WITH CORRESPONDING #( keys )
+        RESULT DATA(lt_employees)
+        FAILED DATA(lt_failed)
+        REPORTED DATA(lt_reported).
+
+      LOOP AT lt_employees ASSIGNING FIELD-SYMBOL(<employee>).
+        DATA(lv_cid) = keys[ KEY entity %key = <employee>-%key ]-%cid.
+        DATA(lv_draft) = keys[ KEY entity %key = <employee>-%key ]-%param-%is_draft.
+
+        APPEND VALUE #( %cid = lv_cid %is_draft = lv_draft ) TO lt_early_num.
+
+        zcl_unm_sing=>get_instance( )->earlynumbering_create(
+          EXPORTING entities = lt_early_num
+          CHANGING  mapped   = mapped
+                    failed   = failed
+                    reported = reported
+        ).
+
+        ASSIGN mapped-zdpk_employees_un_m[ %cid = lv_cid ] TO FIELD-SYMBOL(<ls_mapped_key>).
+        IF sy-subrc = 0.
+          APPEND VALUE #( %cid = lv_cid
+                          %is_draft = lv_draft
+                          %data = CORRESPONDING #( <employee> EXCEPT id )
+                        ) TO zdpk_employees_un_m ASSIGNING FIELD-SYMBOL(<new_employee>).
+
+          GET TIME STAMP FIELD DATA(tsl).
+          <new_employee>-Lastchangedat = tsl.
+          <new_employee>-Locallastchangedat = tsl.
+          <new_employee>-Id = <ls_mapped_key>-Id.
+        ENDIF.
+      ENDLOOP.
+
+      IF zdpk_employees_un_m IS NOT INITIAL.
+        MODIFY ENTITIES OF zdpk_employees_un_m IN LOCAL MODE
+          ENTITY zdpk_employees_un_m
+          CREATE FIELDS ( Departement Lastchangedat Location Name Status locallastchangedat )
+          WITH zdpk_employees_un_m
+          MAPPED DATA(mapped_create).
+
+        APPEND LINES OF mapped_create-zdpk_employees_un_m TO mapped-zdpk_employees_un_m.
+      ENDIF.
+    ENDIF.
+  ENDMETHOD.
+
+  METHOD Resetall.
+    DATA : it_emp TYPE TABLE FOR UPDATE zdpk_employees_un_m.
+
+    SELECT * FROM zdpkemployees INTO TABLE @DATA(it_data).
+
+    it_emp = CORRESPONDING #( it_data MAPPING id = Id
+                                              name = Name
+                                              location = Location
+                                              departement = Departement
+                                              status = Status ).
+
+    LOOP AT it_emp ASSIGNING FIELD-SYMBOL(<emp>).
+      <emp>-%control-Status = if_abap_behv=>mk-on.
+      CLEAR <emp>-Status.
+    ENDLOOP.
+
+    IF it_emp IS NOT INITIAL.
+      MODIFY ENTITIES OF zdpk_employees_un_m IN LOCAL MODE
+        ENTITY zdpk_employees_un_m
+        UPDATE FROM it_emp
+        MAPPED DATA(emp_update).
+
+      mapped-zdpk_employees_un_m = CORRESPONDING #( emp_update-zdpk_employees_un_m ).
+    ENDIF.
+  ENDMETHOD.
+
+  METHOD upload.
+    DATA employees TYPE TABLE FOR CREATE zdpk_employees_un_m.
+    DATA lt_early_num TYPE TABLE FOR CREATE zdpk_employees_un_m.
+
+    IF keys IS NOT INITIAL.
+      GET TIME STAMP FIELD DATA(tsl).
+
+      APPEND VALUE #( %cid = keys[ 1 ]-%cid %is_draft = keys[ 1 ]-%param-%is_draft ) TO lt_early_num.
+
+      zcl_unm_sing=>get_instance( )->earlynumbering_create(
+        EXPORTING entities = lt_early_num
+        CHANGING  mapped   = mapped
+                  failed   = failed
+                  reported = reported
+      ).
+
+      ASSIGN mapped-zdpk_employees_un_m[ %cid = keys[ 1 ]-%cid ] TO FIELD-SYMBOL(<ls_key>).
+      IF sy-subrc = 0.
+        employees = VALUE #( ( %cid = keys[ 1 ]-%cid
+                                %is_draft = keys[ 1 ]-%param-%is_draft
+                                %data = VALUE #( departement = 'SAP'
+                                                 Location = 'India'
+                                                 Id = <ls_key>-Id
+                                                 Lastchangedat = tsl
+                                                 locallastchangedat = tsl
+                                               )
+                            ) ).
+      ENDIF.
+
+      IF employees IS NOT INITIAL.
+        MODIFY ENTITIES OF zdpk_employees_un_m IN LOCAL MODE
+          ENTITY zdpk_employees_un_m
+          CREATE FIELDS ( Departement Lastchangedat Location Name Status locallastchangedat )
+          WITH Employees
+          MAPPED DATA(mapped_create).
+
+        APPEND LINES OF mapped_create-zdpk_employees_un_m TO mapped-zdpk_employees_un_m.
+      ENDIF.
+    ENDIF.
+  ENDMETHOD.
+
+  METHOD resetstatus.
+
+  ENDMETHOD.
+
+ENDCLASS.
+
+CLASS lsc_ZDPK_EMPLOYEES_UN_M DEFINITION INHERITING FROM cl_abap_behavior_saver.
+  PROTECTED SECTION.
+
+    METHODS finalize REDEFINITION.
+    METHODS check_before_save REDEFINITION.
+    METHODS save REDEFINITION.
+    METHODS cleanup REDEFINITION.
+    METHODS cleanup_finalize REDEFINITION.
+
+ENDCLASS.
+
+
+
+CLASS lsc_ZDPK_EMPLOYEES_UN_M IMPLEMENTATION.
+
+  METHOD finalize.
+  ENDMETHOD.
+
+  METHOD check_before_save.
+  ENDMETHOD.
+
+  METHOD save.
+    DATA lv_op TYPE string.
+
+    zcl_unm_sing=>get_instance( )->save(
+      IMPORTING
+        ev_operation = lv_op
+      CHANGING
+        reported     = reported
+    ).
+
+    IF reported-zdpk_employees_un_m IS NOT INITIAL.
+
+      CASE lv_op.
+        WHEN 'CREATE'.
+          reported-zdpk_employees_un_m[ 1 ]-%msg = new_message_with_text(
+                                                    severity = if_abap_behv_message=>severity-success
+                                                    text     = 'New Record Is Created'
+                                                  ).
+
+          DATA it_event TYPE TABLE FOR EVENT zdpk_employees_un_m~employeeEnrolled.
+          DATA wa_event LIKE LINE OF it_event.
+          wa_event-Id = reported-zdpk_employees_un_m[ 1 ]-Id.
+          APPEND wa_event TO it_event.
+          RAISE ENTITY EVENT zdpk_employees_un_m~employeeEnrolled FROM it_event.
+
+        WHEN 'UPDATE'.
+          reported-zdpk_employees_un_m[ 1 ]-%msg = new_message_with_text(
+                                                    severity = if_abap_behv_message=>severity-success
+                                                    text     = 'Record Is Updated'
+                                                  ).
+
+          DATA it_update_event TYPE TABLE FOR EVENT zdpk_employees_un_m~employeeUpdated.
+          DATA wa_update_event LIKE LINE OF it_update_event.
+          wa_update_event-Id = reported-zdpk_employees_un_m[ 1 ]-Id.
+          APPEND wa_update_event TO it_update_event.
+          RAISE ENTITY EVENT zdpk_employees_un_m~employeeUpdated FROM it_update_event.
+
+         WHEN 'DELETE'.
+      ENDCASE.
+
+    ENDIF.
+
+  ENDMETHOD.
+
+  METHOD cleanup.
+  ENDMETHOD.
+
+  METHOD cleanup_finalize.
+  ENDMETHOD.
+
+ENDCLASS.
