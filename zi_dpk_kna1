@@ -1,0 +1,11 @@
+@AbapCatalog.viewEnhancementCategory: [#NONE]
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'zi_dpk_kna1'
+@Metadata.ignorePropagatedAnnotations: true
+define view entity zi_dpk_kna1
+  as select from kna1
+{
+  key kunnr as Customer,
+      name1 as Name,
+      land1 as Country
+}
