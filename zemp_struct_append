@@ -1,0 +1,7 @@
+@EndUserText.label : 'Extension Include Structure for Employees'
+@AbapCatalog.enhancement.category : #EXTENSIBLE_CHARACTER_NUMERIC
+extend type zemp_struct with zemp_struct_append {
+
+  dummy_one : abap.char(1);
+
+}
