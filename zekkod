@@ -1,0 +1,19 @@
+@EndUserText.label : 'Draft table for entity ZR_DPK_BILLINGHEADER'
+@AbapCatalog.enhancement.category : #EXTENSIBLE_ANY
+@AbapCatalog.tableCategory : #TRANSPARENT
+@AbapCatalog.deliveryClass : #A
+@AbapCatalog.dataMaintenance : #RESTRICTED
+define table zekkod {
+
+  key mandt           : mandt not null;
+  key billingdocument : vbeln_vf not null;
+  name                : name1_gp;
+  country             : land1_gp;
+  billingdate         : fkdat;
+  payer               : kunrg;
+  @Semantics.amount.currencyCode : 'zekkod.currency'
+  amount              : netwr;
+  currency            : waerk;
+  "%admin"            : include sych_bdl_draft_admin_inc;
+
+}
