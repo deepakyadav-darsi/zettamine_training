@@ -1,0 +1,22 @@
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'purchase order root view 1 parent'
+@Metadata.ignorePropagatedAnnotations: true
+define root view entity z_dpk_poroot 
+as select from z_dpk_poc1
+composition [1..*] of z_dpk_child as item2
+{
+    key Ebeln,
+    Ebelp,
+    bukrs,
+    lifnr,
+    ekorg,
+    bsart,
+    Matnr,
+    Werks,
+    Lgort,
+    Bednr,
+    Matkl,
+    Infnr,
+    Idnlf,
+   item2 // Make association public
+}
