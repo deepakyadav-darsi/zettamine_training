@@ -1,0 +1,22 @@
+@EndUserText.label : 'Draft table for entity ZR_VBRP_DPK'
+@AbapCatalog.enhancement.category : #EXTENSIBLE_ANY
+@AbapCatalog.tableCategory : #TRANSPARENT
+@AbapCatalog.deliveryClass : #A
+@AbapCatalog.dataMaintenance : #RESTRICTED
+define table zvbrp_dpk_d {
+
+  key mandt           : mandt not null;
+  key billingdocument : vbeln_vf not null;
+  key item            : posnr_vf not null;
+  material            : matnr;
+  description         : arktx;
+  @Semantics.quantity.unitOfMeasure : 'zvbrp_dpk_d.uom'
+  quantity            : fkimg;
+  uom                 : meins;
+  @Semantics.amount.currencyCode : 'zvbrp_dpk_d.currency'
+  amount              : netwr_fp;
+  currency            : waerk;
+  locallastchangedat  : abp_locinst_lastchange_tstmpl;
+  "%admin"            : include sych_bdl_draft_admin_inc;
+
+}
