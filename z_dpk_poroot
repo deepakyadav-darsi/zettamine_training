@@ -1,0 +1,27 @@
+@AbapCatalog.viewEnhancementCategory: [#NONE]
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'purchase order child view'
+@Metadata.ignorePropagatedAnnotations: true
+define view entity z_dpk_child as select from z_dpk_poc2
+association to parent z_dpk_poroot as header2 on $projection.Ebeln = header2.Ebeln
+{
+    key Ebeln,
+    key Ebelp,
+    Matnr,
+    Werks,
+    Lgort,
+    Bednr,
+    Matkl,
+    Infnr,
+    Idnlf,
+    Ersda,
+    CreatedAtTime,
+    Ernam,
+    Laeda,
+    Aenam,
+    Vpsta,
+    Pstat,
+    Lvorm,
+    Mtart,
+    header2
+}
