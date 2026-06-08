@@ -1,0 +1,47 @@
+@Metadata.layer: #CUSTOMER
+annotate entity z_dpk_consume1 with
+{
+  // --- Header Facets (Layout Containers) ---
+  @UI.facet: [
+      {
+          id:              'HeaderData',
+          purpose:         #STANDARD,
+          type:            #IDENTIFICATION_REFERENCE,
+          label:           'General Information',
+          position:        10
+      },
+      {
+          id:              'PurchaseItems',
+          purpose:         #STANDARD,
+          type:            #LINEITEM_REFERENCE,
+          label:           'Purchase Order Items',
+          position:        20,
+          targetElement:   'item2' // This points to your child association
+      }
+  ]
+
+  // --- Field Definitions ---
+
+  @UI: { lineItem:       [ { position: 10, label: 'PO Number' } ],
+         identification: [ { position: 10, label: 'PO Number' } ],
+         selectionField: [ { position: 10 } ] }
+  Ebeln;
+
+  @UI: { lineItem:       [ { position: 20, label: 'Company Code' } ],
+         identification: [ { position: 20, label: 'Company Code' } ],
+         selectionField: [ { position: 20 } ] }
+  bukrs;
+
+  @UI: { lineItem:       [ { position: 30, label: 'Vendor' } ],
+         identification: [ { position: 30, label: 'Vendor' } ],
+         selectionField: [ { position: 30 } ] }
+  lifnr;
+
+  @UI: { lineItem:       [ { position: 40, label: 'Purchasing Org' } ],
+         identification: [ { position: 40 } ] }
+  ekorg;
+
+  @UI: { lineItem:       [ { position: 50, label: 'Doc Type' } ],
+         identification: [ { position: 50 } ] }
+  bsart;
+}
