@@ -1,0 +1,61 @@
+@AbapCatalog.sqlViewName: 'ZSQL611'
+@AbapCatalog.compiler.compareFilter: true
+@AbapCatalog.preserveKey: true
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'cds to consume in btp'
+@Metadata.ignorePropagatedAnnotations: true
+
+@OData.publish: true
+
+define view zcds_capm_1 as select from mara
+{
+    @UI.lineItem: [
+    { position: 10, label: 'Material Number' }
+  ]
+  key matnr           as Matnr,
+
+  @UI.lineItem: [
+    { position: 20, label: 'Created On' }
+  ]
+  ersda               as Ersda,
+
+  @UI.lineItem: [
+    { position: 30, label: 'Created At Time' }
+  ]
+  created_at_time     as CreatedAtTime,
+
+  @UI.lineItem: [
+    { position: 40, label: 'Created By' }
+  ]
+  ernam               as Ernam,
+
+  @UI.lineItem: [
+    { position: 50, label: 'Last Changed On' }
+  ]
+  laeda               as Laeda,
+
+  @UI.lineItem: [
+    { position: 60, label: 'Changed By' }
+  ]
+  aenam               as Aenam,
+
+  @UI.lineItem: [
+    { position: 70, label: 'Maintenance Status' }
+  ]
+  vpsta               as Vpsta,
+
+  @UI.lineItem: [
+    { position: 80, label: 'Status' }
+  ]
+  pstat               as Pstat,
+
+  @UI.lineItem: [
+    { position: 90, label: 'Deletion Flag' }
+  ]
+  lvorm               as Lvorm,
+
+  @UI.lineItem: [
+    { position: 100, label: 'Material Type' }
+  ]
+  mtart               as Mtart
+}
