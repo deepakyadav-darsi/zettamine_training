@@ -1,0 +1,11 @@
+@AbapCatalog.viewEnhancementCategory: [#NONE]
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'zi_dpk_t006a'
+@Metadata.ignorePropagatedAnnotations: true
+define view entity zi_dpk_t006a
+  as select from t006a
+{
+  key spras as Language,
+  key msehi as UoM,
+      mseht as Text
+}
