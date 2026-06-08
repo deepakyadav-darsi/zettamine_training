@@ -1,0 +1,4 @@
+extend view entity zex_employee with {
+ Employees.dummy_field as ext1_field,
+ Employees.dummy_one as ext2_field
+}
