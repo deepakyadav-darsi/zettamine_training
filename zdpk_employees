@@ -1,0 +1,35 @@
+managed implementation in class zbp_dpk_employees unique;
+
+strict ( 2 );
+with draft;
+
+define behavior for zdpk_employees //alias <alias_name>
+//persistent table zdpkemployees
+
+with unmanaged save
+draft table zdpkemployees_d
+lock master
+total etag Lastchangedat
+authorization master ( instance )
+etag master Locallastchangedat
+{
+
+  create ( authorization : global );
+  update;
+  delete;
+  field ( readonly, numbering : managed ) Id;
+  field ( readonly ) status;
+
+  validation checkLocation on save { create; update; }
+  determination filldepartement on modify{ field Location;}
+
+  side effects { field Location affects  field Departement; }
+
+  draft action Activate optimized;
+  draft action Discard;
+  draft action Edit;
+  draft action Resume;
+  draft determine action Prepare;
+
+
+}
