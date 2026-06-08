@@ -1,0 +1,54 @@
+@Metadata.layer: #CUSTOMER
+annotate entity zp_vbrp_dpk with
+{
+  /* -----------------------------------------------------------
+     Facet Definition: Defines the layout of the Object Page 
+     ----------------------------------------------------------- */
+  @UI.facet: [
+    {
+      id:       'GeneralSection',
+      type:     #COLLECTION,
+      label:    'General Information',
+      position: 10
+    },
+    {
+      id:            'FieldGroupDetails',
+      purpose:       #STANDARD,
+      type:          #FIELDGROUP_REFERENCE,
+      label:         'Item Details',
+      parentId:      'GeneralSection',
+      targetQualifier: 'ItemData',
+      position:      10
+    }
+  ]
+
+  /* -----------------------------------------------------------
+     Field Annotations
+     ----------------------------------------------------------- */
+
+  @UI.lineItem: [{ position: 10, label: 'Item Number' }]
+  @UI.fieldGroup: [{ qualifier: 'ItemData', position: 10, label: 'Item Number' }]
+  Item;
+
+  @UI.lineItem: [{ position: 20, label: 'Material' }]
+  @UI.fieldGroup: [{ qualifier: 'ItemData', position: 20, label: 'Material' }]
+  Material;
+
+  @UI.lineItem: [{ position: 30, label: 'Description' }]
+  @UI.fieldGroup: [{ qualifier: 'ItemData', position: 30, label: 'Description' }]
+  Description;
+
+  @UI.lineItem: [{ position: 40, label: 'Quantity' }]
+  @UI.fieldGroup: [{ qualifier: 'ItemData', position: 40, label: 'Quantity' }]
+  Quantity;
+
+  @UI.lineItem: [{ position: 50, label: 'Net Amount' }]
+  @UI.fieldGroup: [{ qualifier: 'ItemData', position: 50, label: 'Net Amount' }]
+  Amount;
+
+  @UI.hidden: true
+  Uom;
+
+  @UI.hidden: true
+  Currency;
+}
