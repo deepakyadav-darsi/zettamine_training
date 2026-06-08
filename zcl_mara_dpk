@@ -1,0 +1,47 @@
+CLASS zcl_mara_dpk DEFINITION
+  PUBLIC
+  FINAL
+  CREATE PUBLIC .
+
+  PUBLIC SECTION.
+
+    METHODS get_matnr IMPORTING VALUE(lv_matnr) TYPE mara-matnr.
+    METHODS display_1.
+  PROTECTED SECTION.
+  PRIVATE SECTION.
+
+ENDCLASS.
+
+
+
+CLASS zcl_mara_dpk IMPLEMENTATION.
+
+  METHOD get_matnr.
+
+ zcl_singleton_it=>get_instance(
+  RECEIVING
+    ro_instance =  data(lo_log1)
+ ).
+
+SELECT SINGLE *
+  FROM mara
+  INTO @DATA(ls_mara)
+  WHERE matnr = @lv_matnr.
+
+    IF sy-subrc eq 0.
+      lo_log1->add_message( iv_text = ' mara data Found'        iv_type = 'I' ).
+    ELSE.
+      lo_log1->add_message( iv_text = 'mara data not  Found'        iv_type = 'E' ).
+    ENDIF.
+
+  ENDMETHOD.
+
+
+
+
+
+  METHOD display_1.
+
+  ENDMETHOD.
+
+ENDCLASS.
