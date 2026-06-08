@@ -1,0 +1,20 @@
+@AbapCatalog.viewEnhancementCategory: [#NONE]
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'empoyee item interface view'
+@Metadata.ignorePropagatedAnnotations: true
+define view entity zi_emp_item
+  as select from zdpk_emp_itm
+{
+
+  key id                 as Id,
+  key parent_uuid        as ParentUuid,
+      role               as Role,
+      employment_type    as EmploymentType,
+      city               as City,
+      age                as Age,
+      locallastchangedat as Locallastchangedat,
+      lastchangedat      as Lastchangedat,
+      createdby          as Createdby,
+      changedby          as Changedby
+
+}
