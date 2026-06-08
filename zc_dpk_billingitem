@@ -1,0 +1,22 @@
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'projection item'
+@Metadata.ignorePropagatedAnnotations: true
+@Metadata.allowExtensions: true
+define view entity zc_dpk_billingitem as projection on zdpk_billing_item
+{
+    key BillingDocument,
+    key Item,
+    Material,
+    Description,
+               @Semantics.quantity.unitOfMeasure: 'UoM'
+    
+    Quantity,
+    Uom,
+               @Semantics.amount.currencyCode: 'Currency'
+    
+    Amount,
+    Currency,
+    /* Associations */
+
+    _Header : redirected to parent zc_dpk_billingheader
+}
