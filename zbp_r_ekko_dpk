@@ -1,0 +1,41 @@
+CLASS zbp_r_ekko_dpk DEFINITION PUBLIC ABSTRACT FINAL FOR BEHAVIOR OF zr_ekko_dpk.
+ENDCLASS.
+
+CLASS zbp_r_ekko_dpk IMPLEMENTATION.
+ENDCLASS.
+
+CLASS lsc_zr_ekko_dpk DEFINITION INHERITING FROM cl_abap_behavior_saver.
+
+  PROTECTED SECTION.
+
+    METHODS save_modified REDEFINITION.
+
+ENDCLASS.
+
+CLASS lsc_zr_ekko_dpk IMPLEMENTATION.
+
+  METHOD save_modified.
+  ENDMETHOD.
+
+ENDCLASS.
+
+CLASS lhc_ZR_ekko_dpk DEFINITION INHERITING FROM cl_abap_behavior_handler.
+  PRIVATE SECTION.
+
+    METHODS get_instance_authorizations FOR INSTANCE AUTHORIZATION
+      IMPORTING keys REQUEST requested_authorizations FOR ZR_ekko_dpk RESULT result.
+
+    METHODS get_global_authorizations FOR GLOBAL AUTHORIZATION
+      IMPORTING REQUEST requested_authorizations FOR ZR_ekko_dpk RESULT result.
+
+ENDCLASS.
+
+CLASS lhc_ZR_ekko_dpk IMPLEMENTATION.
+
+  METHOD get_instance_authorizations.
+  ENDMETHOD.
+
+  METHOD get_global_authorizations.
+  ENDMETHOD.
+
+ENDCLASS.
