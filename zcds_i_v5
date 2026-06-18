@@ -1,0 +1,19 @@
+@AbapCatalog.sqlViewName: 'ZCDSIV5'
+@AbapCatalog.compiler.compareFilter: true
+@AbapCatalog.preserveKey: true
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'first cds'
+@Metadata.ignorePropagatedAnnotations: true
+
+define view zcds_i_v5 as select from sflight
+{
+    key carrid as Carrid,
+    key connid as Connid,
+    key fldate as Fldate,
+    price as Price,
+    planetype as Planetype,
+    seatsmax as Seatsmax,
+    seatsocc as Seatsocc,
+    paymentsum as Paymentsum,
+    seatsmax_b as SeatsmaxB
+}
